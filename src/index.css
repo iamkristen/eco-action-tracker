@@ -1,0 +1,153 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 120 40% 98%;
+    --foreground: 142 30% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 142 30% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 142 30% 10%;
+
+    --primary: 142 76% 36%;
+    --primary-foreground: 144 70% 96%;
+
+    --secondary: 84 59% 70%;
+    --secondary-foreground: 142 30% 10%;
+
+    --muted: 120 40% 96%;
+    --muted-foreground: 142 15% 45%;
+
+    --accent: 84 59% 70%;
+    --accent-foreground: 142 30% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 142 30% 86%;
+    --input: 142 30% 86%;
+    --ring: 142 76% 36%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 120 40% 98%;
+    --sidebar-foreground: 142 30% 10%;
+    --sidebar-primary: 142 76% 36%;
+    --sidebar-primary-foreground: 144 70% 96%;
+    --sidebar-accent: 84 59% 70%;
+    --sidebar-accent-foreground: 142 30% 10%;
+    --sidebar-border: 142 30% 86%;
+    --sidebar-ring: 142 76% 36%;
+  }
+
+  .dark {
+    --background: 142 30% 10%;
+    --foreground: 144 70% 96%;
+
+    --card: 142 30% 12%;
+    --card-foreground: 144 70% 96%;
+
+    --popover: 142 30% 12%;
+    --popover-foreground: 144 70% 96%;
+
+    --primary: 144 70% 50%;
+    --primary-foreground: 142 30% 10%;
+
+    --secondary: 84 59% 30%;
+    --secondary-foreground: 144 70% 96%;
+
+    --muted: 142 30% 20%;
+    --muted-foreground: 144 10% 70%;
+
+    --accent: 84 59% 30%;
+    --accent-foreground: 144 70% 96%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 144 70% 96%;
+
+    --border: 142 30% 20%;
+    --input: 142 30% 20%;
+    --ring: 144 70% 50%;
+    
+    --sidebar-background: 142 30% 12%;
+    --sidebar-foreground: 144 70% 96%;
+    --sidebar-primary: 144 70% 50%;
+    --sidebar-primary-foreground: 142 30% 10%;
+    --sidebar-accent: 84 59% 30%;
+    --sidebar-accent-foreground: 144 70% 96%;
+    --sidebar-border: 142 30% 20%;
+    --sidebar-ring: 144 70% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium tracking-tight;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+}
+
+@layer components {
+  .eco-card {
+    @apply bg-white rounded-xl shadow-md border border-eco-light hover:shadow-lg transition-all duration-300;
+  }
+  
+  .eco-button {
+    @apply rounded-full px-6 py-2.5 font-medium transition-all duration-200;
+  }
+  
+  .eco-button-primary {
+    @apply eco-button bg-eco-gradient text-white hover:shadow-md hover:shadow-eco-medium/30 focus:ring-2 focus:ring-eco-dark/50;
+  }
+  
+  .eco-button-secondary {
+    @apply eco-button bg-eco-neutral text-eco-dark hover:bg-eco-light focus:ring-2 focus:ring-eco-dark/20;
+  }
+  
+  .eco-input {
+    @apply rounded-lg border border-eco-light bg-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-eco-dark/30;
+  }
+  
+  .eco-badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+  
+  .eco-badge-green {
+    @apply eco-badge bg-eco-light text-eco-dark;
+  }
+  
+  .eco-badge-earth {
+    @apply eco-badge bg-eco-clay text-eco-earth;
+  }
+}
+
+@layer utilities {
+  .leaf-pattern {
+    background-color: #f2fce2;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0c5.523 0 10 4.477 10 10v10H0V0zm10 0c5.523 0 10 4.477 10 10v10H10V10C10 4.477 5.523 0 0 0h10z' fill='%234CAF50' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+  }
+}
