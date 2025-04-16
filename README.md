@@ -1,73 +1,89 @@
-# Welcome to your Lovable project
+# 🌍 Circular Economy Tracker UI Design Overview
 
-## Project info
+## 🧩 Project Overview
+Circular Economy Tracker is a decentralized platform aimed at encouraging eco-conscious behavior. Users can log their eco-friendly actions, earn eco-tokens as rewards, and monitor their environmental impact through an intuitive and engaging interface. The app promotes recycling, upcycling, and carbon footprint reduction with a focus on user-friendly design and transparent interaction.
 
-**URL**: https://lovable.dev/projects/d8a093ae-a0f5-4568-a5b7-b2e2ce4f0adf
+---
 
-## How can I edit this code?
+## 🔑 Key UI Requirements
 
-There are several ways of editing your application.
+### 🏠 Landing Page / Home Screen
+- Clean and welcoming design that introduces the platform’s mission.
+- Prominent call-to-action buttons:
+  - “Start Logging Eco Actions”
+  - “Track Impact”
+- Header with:
+  - Circular Economy Tracker logo
+  - Navigation menu: Home, Marketplace, Profile, Log Action
 
-**Use Lovable**
+### 📊 User Dashboard
+- Real-time impact visualization using clear, interactive graphs:
+  - CO2 saved
+  - Items recycled
+- List of recent eco-actions (with timestamps and action types).
+- Display of:
+  - Eco-token balance
+  - Achievements or badges for consistent eco-behaviors
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d8a093ae-a0f5-4568-a5b7-b2e2ce4f0adf) and start prompting.
+### ✅ Action Logging Screen
+- Simple input form for logging actions:
+  - Dropdown/checkboxes for action types: Recycling, Upcycling, Energy Saving
+- Instant visual feedback post-submission:
+  - Eco-impact like CO2 saved shown with animations or progress bars
 
-Changes made via Lovable will be committed automatically to this repo.
+### 🛍️ Marketplace
+- Grid-based marketplace for eco-products and services:
+  - Upcycled items, sustainable goods, eco-friendly clothing, etc.
+- Each item includes:
+  - Image
+  - Short description
+  - Price (if applicable)
+- Search and filter options:
+  - By category (e.g., Furniture, Fashion)
+  - By reward type (redeemable, donation)
 
-**Use your preferred IDE**
+### 🪙 Eco-Tokens & Rewards Page
+- Grid layout of redeemable rewards and donation opportunities
+- Display eco-token balance and redemption progress
+- Include redemption button or donation links with visual confirmation
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 👤 Profile Page
+- Profile info:
+  - Name
+  - Profile picture
+  - Eco-summary stats (total actions, impact, tokens earned)
+- Activity history timeline:
+  - Date-stamped action logs
+  - Earned tokens and achievements
+- Edit profile button
+- Progress tracker for eco-goals:
+  - E.g., “Recycle 10 items this month”
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## 📱 Mobile-Friendly & Clean Design
+- Fully responsive layout for both mobile and desktop
+- Smooth user experience with intuitive navigation
+- Visual hierarchy and icons to guide users
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## 🎨 Design Considerations
+- **Color Scheme:** Soft greens, earth tones, neutrals
+- **Style:** Minimalist and eco-conscious
+- **Interactivity:**
+  - Buttons with hover effects
+  - Sliders for setting goals
+  - Toasts or modals for feedback
+- **Accessibility:**
+  - High contrast for readability
+  - Screen reader friendly
+  - Keyboard navigation support
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 🎯 UI Design Goals
+1. **Simplicity and Clarity** – Easily usable by all age groups and tech skill levels.
+2. **Engagement** – Visually appealing to foster habit-forming eco-actions.
+3. **Consistency** – Uniform color scheme, spacing, and typography across the platform.
 
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/d8a093ae-a0f5-4568-a5b7-b2e2ce4f0adf) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
