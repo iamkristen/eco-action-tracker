@@ -11,12 +11,14 @@ import Signup from "./pages/Signup";
 import Marketplace from "./pages/Marketplace";
 import Rewards from "./pages/Rewards";
 import NotFound from "./pages/NotFound";
+import { ProductProvider } from "./contexts/ProductContext";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
+      <ProductProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -32,6 +34,7 @@ const App = () => (
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
+      </ProductProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
