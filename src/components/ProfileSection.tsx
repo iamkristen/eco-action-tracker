@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { collection, getDocs, onSnapshot, doc, getDoc } from "firebase/firestore";
+import { collection, onSnapshot, doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
@@ -63,37 +63,46 @@ const EcoHeroesCarousel = () => {
   }, []);
 
   return (
-    <section className="mt-12">
-      <div className="flex items-center mb-4">
-        <Sparkles className="text-eco-dark mr-2" />
-        <h3 className="text-xl font-semibold text-eco-dark">
-          Heroes Saving the Planet
-        </h3>
-      </div>
-
-      <ScrollArea className="w-full whitespace-nowrap pb-2">
-        <div className="flex space-x-4">
-          {heroes.map((hero) => (
-            <Card key={hero.userId} className="w-64 border-none shadow-sm shrink-0">
-              <CardContent className="p-4 flex flex-col items-center text-center">
-                <Avatar className="w-16 h-16 mb-2">
-                  <AvatarImage src={hero.photoURL} alt={hero.name} />
-                  <AvatarFallback>
-                    {hero.name?.charAt(0)?.toUpperCase() || "?"}
-                  </AvatarFallback>
-                </Avatar>
-                <p className="font-semibold text-eco-dark">{hero.name}</p>
-                <p className="text-xs text-gray-500 mb-2">{hero.userId === user?.id ? "(You)" : ""}</p>
-                <div className="text-sm">
-                  <p className="text-blue-600">CO₂ Saved: {hero.carbonSaved.toFixed(1)} kg</p>
-                  <p className="text-amber-600">Eco Tokens: {hero.ecoPoints}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+    <section className="py-12 px-4 md:px-12 lg:px-20 bg-white">
+      <div className="max-w-7xl mx-auto text-center">
+        <div className="flex items-center justify-center mb-6">
+          <Sparkles className="text-eco-dark mr-2" />
+          <h3 className="text-xl font-semibold text-eco-dark">Heroes Saving the Planet</h3>
         </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
+
+        <ScrollArea className="pb-4 overflow-visible">
+          <div className="flex justify-center gap-6 px-2 pb-8">
+            {heroes.map((hero) => (
+              <Card
+                key={hero.userId}
+                className="w-64 shrink-0 border-none shadow-md rounded-2xl bg-eco-light/50 hover:scale-[1.02] transition-transform"
+              >
+                <CardContent className="p-6 flex flex-col items-center text-center">
+                  <Avatar className="w-20 h-20 mb-3 ring-4 ring-white shadow-md">
+                    <AvatarImage src={hero.photoURL} alt={hero.name} />
+                    <AvatarFallback className="bg-eco-dark text-white font-semibold">
+                      {hero.name?.charAt(0)?.toUpperCase() || "?"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <p className="text-lg font-semibold text-eco-dark">{hero.name}</p>
+                  {hero.userId === user?.id && (
+                    <p className="text-xs text-eco-medium mb-1">(You)</p>
+                  )}
+                  <div className="text-sm space-y-1 mt-2">
+                    <p className="text-blue-600 font-medium">
+                      CO₂ Saved: <span className="font-bold">{hero.carbonSaved.toFixed(1)} kg</span>
+                    </p>
+                    <p className="text-amber-600 font-medium">
+                      Eco Tokens: <span className="font-bold">{hero.ecoPoints}</span>
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      </div>
     </section>
   );
 };
