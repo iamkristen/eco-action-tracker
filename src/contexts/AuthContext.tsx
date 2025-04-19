@@ -9,7 +9,8 @@ import {
   fetchSignInMethodsForEmail,
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
-import { auth, googleProvider } from "../firebase";
+import { auth, googleProvider, db } from "../firebase";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 type User = {
   id: string;
@@ -32,15 +33,25 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
+  const saveUserToFirestore = async (user: User) => {
+    const userRef = doc(db, "users", user.id);
+    const existing = await getDoc(userRef);
+    if (!existing.exists()) {
+      await setDoc(userRef, user);
+    }
+  };
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        setUser({
+        const currentUser = {
           id: firebaseUser.uid,
           name: firebaseUser.displayName || "Anonymous",
           email: firebaseUser.email || "",
           photoURL: firebaseUser.photoURL || undefined,
-        });
+        };
+        setUser(currentUser);
+        await saveUserToFirestore(currentUser);
       } else {
         setUser(null);
       }
@@ -53,12 +64,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
       const firebaseUser = result.user;
-      setUser({
+      const currentUser = {
         id: firebaseUser.uid,
         name: firebaseUser.displayName || "Anonymous",
         email: firebaseUser.email || "",
         photoURL: firebaseUser.photoURL || undefined,
-      });
+      };
+      setUser(currentUser);
+      await saveUserToFirestore(currentUser);
     } catch (error) {
       if (error instanceof FirebaseError) {
         if (error.code === "auth/wrong-password") {
@@ -82,12 +95,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const firebaseUser = result.user;
-      setUser({
+      const currentUser = {
         id: firebaseUser.uid,
         name: firebaseUser.displayName || "Google User",
         email: firebaseUser.email || "",
         photoURL: firebaseUser.photoURL || undefined,
-      });
+      };
+      setUser(currentUser);
+      await saveUserToFirestore(currentUser);
     } catch (error) {
       throw new Error("Google sign-in failed. Please try again.");
     }
@@ -98,11 +113,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const firebaseUser = result.user;
     await updateProfile(firebaseUser, { displayName: name });
 
-    setUser({
+    const newUser = {
       id: firebaseUser.uid,
       name: name,
       email: firebaseUser.email || "",
-    });
+      photoURL: firebaseUser.photoURL || undefined,
+    };
+    setUser(newUser);
+    await saveUserToFirestore(newUser);
   };
 
   const logout = () => {

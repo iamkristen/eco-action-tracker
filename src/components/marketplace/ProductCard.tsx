@@ -6,10 +6,18 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProducts } from "@/contexts/ProductContext";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter as DialogModalFooter } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter as DialogModalFooter,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import LoginModal from "@/components/auth/LoginModal"; // Import the login modal
-import SignupModal from "@/components/auth/SignupModal"; // Import the signup modal
+import LoginModal from "@/components/auth/LoginModal";
+import SignupModal from "@/components/auth/SignupModal";
+import { useContract } from "@/contexts/ethereum/ContractContext";
+import { useTransactions } from "@/contexts/TransactionContext";
 
 export interface Product {
   id: string;
@@ -33,12 +41,14 @@ const ProductCard = ({ product, onEdit }: ProductCardProps) => {
   const { toast } = useToast();
   const { user } = useAuth();
   const { deleteProduct } = useProducts();
+  const { saveTransaction } = useContract();
+  const { addTransaction } = useTransactions();
   const isOwner = user?.id === product.createdBy;
 
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
-  const [showLoginDialog, setShowLoginDialog] = useState(false); // State to control Login Modal visibility
-  const [showSignupDialog, setShowSignupDialog] = useState(false); // State to control Signup Modal visibility
+  const [showLoginDialog, setShowLoginDialog] = useState(false);
+  const [showSignupDialog, setShowSignupDialog] = useState(false);
 
   const [cardNumber, setCardNumber] = useState("");
   const [cvv, setCvv] = useState("");
@@ -59,7 +69,7 @@ const ProductCard = ({ product, onEdit }: ProductCardProps) => {
     }
   };
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     if (!cardNumber || !cvv || !expiry) {
       toast({ title: "All fields required", variant: "destructive" });
       return;
@@ -74,13 +84,54 @@ const ProductCard = ({ product, onEdit }: ProductCardProps) => {
     setCardNumber("");
     setCvv("");
     setExpiry("");
+
+    if (!user) return;
+
+    try {
+      const buyerPoints = product.ecoPoints;
+      const carbon = parseFloat(product.carbonReduction) * 100;
+
+      await saveTransaction(user.id, buyerPoints, carbon);
+      await addTransaction({
+        userId: user.id,
+        type: "buy",
+        points: buyerPoints,
+        carbonSaved: carbon,
+        metadata: product.name,
+      });
+
+      if (product.createdBy && product.createdBy !== user.id) {
+        const sellerPoints = Math.floor(buyerPoints / 2);
+        await saveTransaction(product.createdBy, sellerPoints, carbon);
+        await addTransaction({
+          userId: product.createdBy,
+          type: "sell",
+          points: sellerPoints,
+          carbonSaved: carbon,
+          metadata: product.name,
+        });
+      }
+
+      toast({
+        title: "Rewards Updated",
+        description: "Eco points and carbon savings recorded for buyer and seller.",
+        variant: "default",
+      });
+    } catch (error) {
+      toast({
+        title: "Transaction Error",
+        description: "Transaction failed. Please try again."+error,
+        variant: "destructive",
+      });
+      console.error("Save transaction failed:", error);
+    }
   };
 
   const handleBuyNow = () => {
     if (!user) {
-      setShowLoginDialog(true); // Show login modal if the user is not logged in
+      setShowLoginDialog(true);
     } else {
-      setShowPaymentDialog(true); // Proceed with the payment if the user is logged in
+      setShowPaymentDialog(true);
     }
   };
 
@@ -139,7 +190,6 @@ const ProductCard = ({ product, onEdit }: ProductCardProps) => {
         </CardFooter>
       </Card>
 
-      {/* Delete Confirmation Dialog */}
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <DialogContent>
           <DialogHeader>
@@ -159,7 +209,6 @@ const ProductCard = ({ product, onEdit }: ProductCardProps) => {
         </DialogContent>
       </Dialog>
 
-      {/* Payment Dialog */}
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
         <DialogContent>
           <DialogHeader>
@@ -167,22 +216,10 @@ const ProductCard = ({ product, onEdit }: ProductCardProps) => {
           </DialogHeader>
 
           <div className="grid gap-4 mt-4">
-            <Input
-              placeholder="Card Number"
-              value={cardNumber}
-              onChange={(e) => setCardNumber(e.target.value)}
-            />
+            <Input placeholder="Card Number" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} />
             <div className="flex gap-4">
-              <Input
-                placeholder="Expiry (MM/YY)"
-                value={expiry}
-                onChange={(e) => setExpiry(e.target.value)}
-              />
-              <Input
-                placeholder="CVV"
-                value={cvv}
-                onChange={(e) => setCvv(e.target.value)}
-              />
+              <Input placeholder="Expiry (MM/YY)" value={expiry} onChange={(e) => setExpiry(e.target.value)} />
+              <Input placeholder="CVV" value={cvv} onChange={(e) => setCvv(e.target.value)} />
             </div>
           </div>
 
@@ -197,23 +234,21 @@ const ProductCard = ({ product, onEdit }: ProductCardProps) => {
         </DialogContent>
       </Dialog>
 
-      {/* Login Modal */}
       <LoginModal
         open={showLoginDialog}
         onOpenChange={setShowLoginDialog}
         onShowSignup={() => {
           setShowLoginDialog(false);
-          setShowSignupDialog(true); // Transition to the signup modal
+          setShowSignupDialog(true);
         }}
       />
 
-      {/* Signup Modal */}
       <SignupModal
         open={showSignupDialog}
         onOpenChange={setShowSignupDialog}
         onShowLogin={() => {
           setShowSignupDialog(false);
-          setShowLoginDialog(true); // Transition back to login modal
+          setShowLoginDialog(true);
         }}
       />
     </>

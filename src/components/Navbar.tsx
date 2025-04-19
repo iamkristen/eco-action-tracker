@@ -59,16 +59,7 @@ const Navbar = () => {
           </div>
           
           <AuthButtons />
-          
-          {isAuthenticated && (
-            <Button 
-              className="bg-eco-gradient hover:shadow-md"
-              size="sm"
-            >
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Log Action
-            </Button>
-          )}
+         
         </div>
 
        
