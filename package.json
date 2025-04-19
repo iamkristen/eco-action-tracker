@@ -13,8 +13,6 @@
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@polkadot/api": "^15.9.2",
-    "@polkadot/api-contract": "^15.9.2",
-    "@polkadot/extension-dapp": "^0.58.7",
     "@polkadot/extension-inject": "^0.58.7",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
