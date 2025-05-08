@@ -1,4 +1,4 @@
-# 🌍 Circular Economy Tracker UI Design Overview
+# 🌍 Circular Economy Tracker
 
 ## 🧩 Project Overview
 Circular Economy Tracker is a decentralized platform aimed at encouraging eco-conscious behavior. Users can log their eco-friendly actions, earn eco-tokens as rewards, and monitor their environmental impact through an intuitive and engaging interface. The app promotes recycling, upcycling, and carbon footprint reduction with a focus on user-friendly design and transparent interaction.
